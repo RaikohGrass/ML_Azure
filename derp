@@ -1,0 +1,14 @@
+Hi Anand,
+
+You should save your model in the train.py script instead of the notebook, like this:
+
+ os.makedirs('outputs', exist_ok=True)
+ joblib.dump(value=model, filename='outputs/model.pkl')
+After this once you get the best model from,
+
+best_run = hyperdrive_run.get_best_run_by_primary_metric()
+then you can register that model using the model saved by train.py script like this,
+
+model = best_run.register_model(model_name='hyperdrive_model', model_path='./outputs/model.pkl',
+                       model_framework=Model.Framework.SCIKITLEARN,
+                       model_framework_version='0.19.1')
