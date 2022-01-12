@@ -15,7 +15,9 @@ The best result was obtained using autoML. It resulted in a VotingEnsemble with 
 The best run of the hyperdrive gave us an accuracy of 0.91128, which is not far away from the best model
 
 ## Scikit-learn Pipeline
-**Explain the pipeline architecture, including data, hyperparameter tuning, and classification algorithm.**
+For the pipeline of Hyperdrive we defined a curated environment which included all the libraries needed for the training of a logistic regression model.
+The training itself was performed with a predefined script that included the gathering of the data from a URL, its cleaning, and the divsision into training and test sets of it. 
+
 
 **What are the benefits of the parameter sampler you chose?**
 
