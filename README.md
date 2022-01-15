@@ -32,6 +32,8 @@ Using autoML we defined a pipeline that gave us a total of 10 models.
 It didnt generate more as it didnt see a performance increase after training the VotinEnsemble
 The VotingEnsemble is formed by seven algorithms. Each of them has an assigned weight which is using to regulate their saying for the prediction. 
 
+For the autoML pipeline the following configuration was used:
+
 ```
 automl_config = AutoMLConfig(
     experiment_timeout_minutes=30,
@@ -41,6 +43,14 @@ automl_config = AutoMLConfig(
     label_column_name='y',
     n_cross_validations=2)
 ```
+In the configuration the following parameters are defined:
+- experiment_timeout_minutes: how long will azure wait during the response of the experiment before it breaks the request
+- task: which kind of task we are working on (classification or regression). This will decide which kind of models will be trained
+- primary_metric: the measurement that autoML should use to benchmark the models
+- training_data: data to be used
+- label_column_name: the objective of our regression or classification problem (included in "training_data")
+- n_cross_validations: how many cross validations should be performed after training each model
+
 
 ## Pipeline comparison
 There was just a small difference in accuracy and comparing the time required for the hyperdrive to compute, it was not worth it in this particular case.
@@ -48,7 +58,7 @@ The Hyperdrive pipeline was computed much faster.
 
 
 ## Future work
-It would be nice to know if increasing the range of the search space for the hyperdrive would bring any increase on the performance of the system.
+It would be nice to know if increasing the range of the search space for the hyperdrive would bring any increase on the performance of the system. Since we are using a restricted search space it can be possible that our hyperdrive run get stuck in a local optimum. Making the search space wider could brin us closer to the global optimum for our problem. 
 I would also like to know if autoML can make an optimized LogisticRegression and compare it to the one obtained with Hyperdrive
 
 ## Proof of cluster clean up
