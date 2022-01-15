@@ -20,17 +20,27 @@ The training itself was performed with a predefined script that included the gat
 
 After defining the environment a ScriptRunConfig was stablished. It encapsulated the environment, the target training script and the compute to be used
 
-**What are the benefits of the parameter sampler you chose?**
-The sampler that I used allows me to define a fixed set of parameters which I want to iterate through. That way I know beforehand which values I'll expect
+Having a defined ScriptRunConfig we can define the HyperDriveConfig object. The idea of HyperDrive is to create multiple instances of the same model (in our case a Logistic Regression) which are trained using different parameters each time (these are the hyperparameters, which are set fix before the training). HyperDrive will take our define search space (the sampler used) and iterate through it training a model each time and measuring its accuracy. 
+This automated optimization process is really helpful as the tuning per hand of the hyperparameters is normally a time consuming task. 
 
-**What are the benefits of the early stopping policy you chose?**
-The policy allows me to stop the hyperdrive run when no changes are noticed in the accuracy. In my particular case it didnt matter as all the combinatios were tried out due to the fixed range of the parameters.
+The sampler used in this project allows us to define a fixed set of parameters which I want to iterate through. That way I know beforehand which values I'll expect and the search space can be restricted to a range based on previous knowledge, i.e., the algorithm won´t waste resources training models with parameter values out of a plausibel range.
+
+The policy allows us to stop the hyperdrive run when no changes are noticed in the accuracy. In my particular case it didnt matter as all the combinatios were tried out due to the fixed range of the parameters.
 
 ## AutoML
 Using autoML we defined a pipeline that gave us a total of 10 models. 
 It didnt generate more as it didnt see a performance increase after training the VotinEnsemble
 The VotingEnsemble is formed by seven algorithms. Each of them has an assigned weight which is using to regulate their saying for the prediction. 
 
+```
+automl_config = AutoMLConfig(
+    experiment_timeout_minutes=30,
+    task='classification',
+    primary_metric='accuracy',
+    training_data=ds,
+    label_column_name='y',
+    n_cross_validations=2)
+```
 
 ## Pipeline comparison
 There was just a small difference in accuracy and comparing the time required for the hyperdrive to compute, it was not worth it in this particular case.
